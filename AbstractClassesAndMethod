@@ -1,0 +1,101 @@
+package AbstractClasses;
+import java.util.Scanner;
+
+abstract class RRPaymentServices{
+	double balance;
+	int customerId;
+	public RRPaymentServices(double balance, int customerId) {
+		super();
+		this.balance = balance;
+		this.customerId = customerId;
+	}
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+	abstract void payBill(double amount);
+}
+
+class ShoppingPaymentClass extends RRPaymentServices{
+	static int counter=1000;
+	String paymentId;
+	
+	public ShoppingPaymentClass(double balance, int customerId) {
+		super(balance, customerId);
+	}
+	public String getPaymentId() {
+		return paymentId;
+	}
+	void payBill(double amount) {
+		if(balance>amount) {
+			System.out.println("Insufficient amount entered!! Please try again.");
+		}
+		else if(balance<amount) {
+			System.out.println("Excess amount entered!! Please try again.");			
+		}
+		else {
+			paymentId="S"+(counter+1);
+			System.out.println("Congratulations!! Your payment of Rs."+amount+" is successfull with payment id "+paymentId);
+			
+		}
+	}
+	
+}
+
+
+class CreditCardPayment extends RRPaymentServices{
+	static int counter=1000;
+	String paymentId;
+	double cashBack;
+	double balanceDue;
+	public CreditCardPayment(double balance, int customerId) {
+		super(balance, customerId);
+		// TODO Auto-generated constructor stub
+	}
+	public String getPaymentId() {
+		return paymentId;
+	}
+	public double getCashBack() {
+		return cashBack;
+	}
+	public double getBalanceDue() {
+		return balanceDue;
+	}
+	void payBill(double amount) {
+		if(amount>balance) {
+			cashBack=amount-balance;
+		}
+		else if(amount<balance) {
+			balanceDue=balance-amount;
+		}
+		paymentId="C"+(counter+1);
+		System.out.println("Congratulations!! You have successfully made a payment of Rs."+amount+" . Payment Details are-");
+		System.out.println("************************************");
+		System.out.println("Customer ID            :"+customerId);
+		System.out.println("Payment ID             :"+paymentId);
+		System.out.println("Previous Due           :Rs."+balance);
+		System.out.println("Remaining Due          :Rs."+balanceDue);
+		System.out.println("Cashback Wallet Balance:Rs."+cashBack);
+	}
+	
+}
+
+public class Tester {
+
+	public static void main(String[] args) {
+		Scanner sch=new Scanner(System.in);
+		RRPaymentServices rpsOne=new CreditCardPayment(10000.23,5001);
+		rpsOne.payBill(sch.nextDouble());
+		
+
+		RRPaymentServices rpsTwo=new ShoppingPaymentClass(5000.0,561328);
+        rpsTwo.payBill(sch.nextDouble());
+        
+	}
+
+}
